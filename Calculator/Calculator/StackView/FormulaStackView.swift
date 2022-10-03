@@ -9,16 +9,16 @@ class FormulaStackView: UIStackView {
             return
         }
         
-        if formula.isEmpty == true {
+        guard let operatorSign = operatorLabel.text else {
+            formula.removeAll()
             formula.append(number)
             addSubStackView(including: number)
-        } else {
-            guard let operatorSign = operatorLabel.text else {
-                return
-            }
-            formula.append(operatorSign + number)
-            addSubStackView(including: number, and: operatorSign)
+            return
         }
+        
+        formula.append(operatorSign + number)
+        addSubStackView(including: number, and: operatorSign)
+        
     }
     
     private func addSubStackView(including number: String, and operatorSign: String = "") {

@@ -5,6 +5,11 @@
 // 
 
 import UIKit
+enum CalculatorState {
+    case standBy
+    case receiving
+    case calculating
+}
 
 class ViewController: UIViewController {
     //MARK: - IBOutlet
@@ -15,6 +20,7 @@ class ViewController: UIViewController {
     //MARK: - Properties
     private var resetList: [Resettable] = []
     private let formatter: CalculatorFormatter = CalculatorFormatter()
+    private var state: CalculatorState = .standBy
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,12 +33,23 @@ class ViewController: UIViewController {
         guard let number: String = sender.number else {
             return
         }
-        
+        if state == .calculating {
+            allClear()
+        }
         numberLabel.text = formatter.convertDecimalNumber(form: numberLabel.text, appendding: number)
+        state = .receiving
     }
     
     @IBAction func touchUpOperatorButton(_ sender: OperatorButton) {
+        guard let operatorSign: String = sender.operatorSign,
+              state != .standBy else {
+            return
+        }
         
+        appendFormulaIntoStackView()
+        numberLabel.reset()
+        operatorLabel.text = operatorSign
+        state = .receiving
     }
     
     @IBAction func touchUpCommandButton(_ sender: CommandButton) {
@@ -42,23 +59,21 @@ class ViewController: UIViewController {
         
         switch command {
         case .allClear:
-            execute(allClear)
+            allClear()
         case .clearElement:
-            execute(clearElement)
+            clearElement()
         case .swapNumberSign:
-            execute(swapNumberSign)
+            swapNumberSign()
         case .enterDecimalPoints:
-            execute(enterDecimalPoints)
+            enterDecimalPoints()
         case .calculate:
-            execute(calculate)
+            if state == .receiving {
+                appendFormulaIntoStackView()
+                calculate()
+            }
         }
     }
     //MARK: - Method
-    
-    private func execute(_ command: () -> Void) {
-        command()
-    }
-    
     private func appendFormulaIntoStackView() {
         formulaStackView.appendFormula(combining: operatorLabel, to: numberLabel)
         scrollView.moveToBottom()
@@ -70,31 +85,31 @@ extension ViewController {
         resetList.forEach {
             $0.reset()
         }
+        state = .standBy
     }
     
     private func clearElement() {
-        numberLabel.reset()
+        if state == .calculating {
+            allClear()
+        } else {
+            numberLabel.reset()
+        }
     }
     
     private func swapNumberSign() {
-        
+        numberLabel.text = formatter.swapNumberSign(for: numberLabel.text)
     }
     
     private func enterDecimalPoints() {
-        
+        numberLabel.text = formatter.enterDecimalPoint(for: numberLabel.text)
     }
     
     private func calculate() {
         var formula: Formula = ExpressionParser.parse(from: formulaStackView.formula.removedComma())
         let result: Double = formula.result()
         
-        if result.isInfinite || result.isNaN {
-            let notANumber: String = "NaN"
-            numberLabel.text = notANumber
-        } else {
-            numberLabel.text = String(result)
-        }
-        
+        numberLabel.text = formatter.string(for: result)
         operatorLabel.reset()
+        state = .calculating
     }
 }
