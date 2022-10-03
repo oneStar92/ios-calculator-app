@@ -10,9 +10,9 @@ class CalculatorFormatter: NumberFormatter {
         super.init(coder: coder)
     }
     
-    func convertDecimalNumber(form text: String?, appendding number: String) -> String? {
+    func convertDecimalNumber(form text: String?, appendding enteredNumber: String) -> String? {
         guard let textWithoutComma: String = text?.removedComma(),
-              let number: Double = Double(textWithoutComma) else {
+              let number: Double = Double(textWithoutComma + enteredNumber) else {
             return nil
         }
         return self.string(for: number)

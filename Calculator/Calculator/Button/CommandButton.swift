@@ -1,19 +1,19 @@
 import UIKit
 
 class CommandButton: UIButton {
-    var command: CalculatorCommands? {
+    var command: CalculatorCommand? {
         return makeCommand(outof: self.restorationIdentifier)
     }
     
-    private func makeCommand(outof restorationIdentifier: String?) -> CalculatorCommands? {
+    private func makeCommand(outof restorationIdentifier: String?) -> CalculatorCommand? {
         guard let identifier = restorationIdentifier else {
             return nil
         }
-        return CalculatorCommands.init(rawValue: identifier)
+        return CalculatorCommand.init(rawValue: identifier)
     }
 }
 
-enum CalculatorCommands: String {
+enum CalculatorCommand: String {
     case allClear = "AC"
     case clearElement = "CE"
     case swapNumberSign = "SwapNumberSign"

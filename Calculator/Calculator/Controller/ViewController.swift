@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     @IBOutlet weak private var scrollView: UIScrollView!
     //MARK: - Properties
     private var resetList: [Resettable] = []
-    private var isCalculated: Bool = false
+    private let formatter: CalculatorFormatter = CalculatorFormatter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,11 @@ class ViewController: UIViewController {
     }
     //MARK: - IBAction
     @IBAction func touchUpOperandButton(_ sender: OperandButton) {
-
+        guard let number: String = sender.number else {
+            return
+        }
+        
+        numberLabel.text = formatter.convertDecimalNumber(form: numberLabel.text, appendding: number)
     }
     
     @IBAction func touchUpOperatorButton(_ sender: OperatorButton) {
@@ -32,7 +36,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func touchUpCommandButton(_ sender: CommandButton) {
-        guard let command: CalculatorCommands = sender.command else {
+        guard let command: CalculatorCommand = sender.command else {
             return
         }
         
@@ -60,7 +64,7 @@ class ViewController: UIViewController {
         scrollView.moveToBottom()
     }
 }
-//MARK: - Command Func
+//MARK: - Command Method
 extension ViewController {
     private func allClear() {
         resetList.forEach {
