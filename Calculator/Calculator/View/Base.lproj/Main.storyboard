@@ -307,7 +307,7 @@
                                                     <action selector="touchUpCommandButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RHI-En-33U"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="calculation" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Daw-iX-Owl" customClass="CommandButton" customModule="Calculator" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="Calculate" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Daw-iX-Owl" customClass="CommandButton" customModule="Calculator" customModuleProvider="target">
                                                 <rect key="frame" x="292.5" y="0.0" width="89.5" height="89.5"/>
                                                 <color key="backgroundColor" red="0.89715212580000003" green="0.57001358270000002" blue="0.2305330038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>

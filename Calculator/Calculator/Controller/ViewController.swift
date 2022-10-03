@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         resetList = [numberLabel, operatorLabel, formulaStackView]
-        initialization()
+        allClear()
     }
     //MARK: - IBAction
     @IBAction func touchUpOperandButton(_ sender: OperandButton) {
@@ -32,47 +32,65 @@ class ViewController: UIViewController {
     }
     
     @IBAction func touchUpCommandButton(_ sender: CommandButton) {
-        guard let command: Command = sender.command else {
+        guard let command: CalculatorCommands = sender.command else {
             return
         }
         
         switch command {
         case .allClear:
-            initialization()
+            execute(allClear)
         case .clearElement:
-            numberLabel.reset()
+            execute(clearElement)
         case .swapNumberSign:
-            return
+            execute(swapNumberSign)
         case .enterDecimalPoints:
-            return
-        case .calculation:
-            appendFormulaIntoStackView()
-            calculateFormula()
+            execute(enterDecimalPoints)
+        case .calculate:
+            execute(calculate)
         }
     }
     //MARK: - Method
-    private func initialization() {
-        resetList.forEach {
-            $0.reset()
-        }
+    
+    private func execute(_ command: () -> Void) {
+        command()
     }
     
     private func appendFormulaIntoStackView() {
         formulaStackView.appendFormula(combining: operatorLabel, to: numberLabel)
         scrollView.moveToBottom()
     }
+}
+//MARK: - Command Func
+extension ViewController {
+    private func allClear() {
+        resetList.forEach {
+            $0.reset()
+        }
+    }
     
-    private func calculateFormula() {
-        var formula: Formula = ExpressionParser.parse(from: formulaStackView.formula.filter({ $0 != ","}))
+    private func clearElement() {
+        numberLabel.reset()
+    }
+    
+    private func swapNumberSign() {
+        
+    }
+    
+    private func enterDecimalPoints() {
+        
+    }
+    
+    private func calculate() {
+        var formula: Formula = ExpressionParser.parse(from: formulaStackView.formula.removedComma())
         let result: Double = formula.result()
         
         if result.isInfinite || result.isNaN {
-            numberLabel.text = "NaN"
+            let notANumber: String = "NaN"
+            numberLabel.text = notANumber
         } else {
-            return
+            numberLabel.text = String(result)
         }
         
         operatorLabel.reset()
     }
 }
-
