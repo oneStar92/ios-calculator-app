@@ -21,4 +21,9 @@ extension String {
         
         return splitResult
     }
+    
+    func removedComma() -> String {
+        let commaSign: Character = ","
+        return self.filter{$0 != commaSign}
+    }
 }

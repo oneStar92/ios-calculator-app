@@ -24,24 +24,11 @@ class ViewController: UIViewController {
     }
     //MARK: - IBAction
     @IBAction func touchUpOperandButton(_ sender: OperandButton) {
-        checkCalculated()
-        
-        guard let number = sender.number else {
-            return
-        }
-        
-        numberLabel.append(number)
+
     }
     
     @IBAction func touchUpOperatorButton(_ sender: OperatorButton) {
-        checkCalculated()
         
-        if numberLabel.isReceiving == true && numberLabel.isZero == false {
-            appendFormulaIntoStackView()
-            numberLabel.reset()
-        }
-        
-        operatorLabel.text = sender.operatorSign
     }
     
     @IBAction func touchUpCommandButton(_ sender: CommandButton) {
@@ -55,16 +42,12 @@ class ViewController: UIViewController {
         case .clearElement:
             numberLabel.reset()
         case .swapNumberSign:
-            if isCalculated == false{
-                numberLabel.swapNumberSign()
-            }
+            return
         case .enterDecimalPoints:
-            numberLabel.appendDecimalPoints()
+            return
         case .calculation:
-            if isCalculated == false {
-                appendFormulaIntoStackView()
-                calculateFormula()
-            }
+            appendFormulaIntoStackView()
+            calculateFormula()
         }
     }
     //MARK: - Method
@@ -86,18 +69,10 @@ class ViewController: UIViewController {
         if result.isInfinite || result.isNaN {
             numberLabel.text = "NaN"
         } else {
-            numberLabel.text = CalculatorNumberFormatter.shared.string(for: result)
+            return
         }
         
         operatorLabel.reset()
-        isCalculated = true
-    }
-    
-    private func checkCalculated() {
-        if isCalculated == true {
-            initialization()
-            isCalculated = false
-        }
     }
 }
 
