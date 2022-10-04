@@ -25,35 +25,37 @@ class CalculatorFormatter: NumberFormatter {
               let number: Double = Double(textWithoutComma + enteredNumber) else {
             return text
         }
-
+        
         if textWithoutComma.contains(decimalPoint) {
-            return textWithoutComma + enteredNumber
+            var textWithComma: String? = text
+            textWithComma?.append(enteredNumber)
+            return textWithComma
         } else {
             return self.string(for: number)
         }
     }
     
     func swapNumberSign(for number: String?) -> String? {
-        guard let numberWithoutComma: String = number?.removedComma() else {
+        guard let numberWithComma: String = number else {
             return number
         }
         
-        if numberWithoutComma.first == negativeSign {
-            return String(numberWithoutComma.dropFirst())
+        if numberWithComma.first == negativeSign {
+            return String(numberWithComma.dropFirst())
         } else {
-            return String(negativeSign) + numberWithoutComma
+            return String(negativeSign) + numberWithComma
         }
     }
     
     func enterDecimalPoint(for number: String?) -> String? {
-        guard let number = number else {
+        guard let numberWithComma = number else {
             return number
         }
         
-        if number.contains(decimalPoint) {
+        if numberWithComma.contains(decimalPoint) {
             return number
         } else {
-            return number + String(decimalPoint)
+            return numberWithComma + String(decimalPoint)
         }
     }
 }
