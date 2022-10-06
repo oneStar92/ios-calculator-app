@@ -6,6 +6,26 @@
 
 import UIKit
 
+@propertyWrapper
+struct CleanNumber {
+    private var value: String = "0"
+    var wrappedValue: String {
+        get {
+            return value
+        }
+        set {
+            if value == "0" {
+                let newValueWithOutZero: String = newValue.filter({ $0 != "0" })
+                if newValueWithOutZero.count > 0 {
+                    value = newValueWithOutZero
+                }
+            } else {
+                value = newValue
+            }
+        }
+    }
+}
+
 class ViewController: UIViewController {
     //MARK: - IBOutlet
     @IBOutlet weak private var numberLabel: NumberLabel!
@@ -15,7 +35,7 @@ class ViewController: UIViewController {
     //MARK: - Properties
     private var resetList: [Resettable] = []
     private var isCalculated: Bool = false
-    private var numberString: String = "" {
+    @CleanNumber private var numberString: String {
         didSet {
             numberLabel.text = CalculatorNumberFormatter.shared.convertedDecimalNumber(from: numberString)
         }
@@ -31,11 +51,11 @@ class ViewController: UIViewController {
     @IBAction func touchUpOperandButton(_ sender: OperandButton) {
         checkCalculated()
         
-        guard let number = sender.number else {
+        guard let inputNumber = sender.number else {
             return
         }
         
-        numberString.append(number)
+        numberString.append(inputNumber)
     }
     
     @IBAction func touchUpOperatorButton(_ sender: OperatorButton) {
@@ -58,11 +78,13 @@ class ViewController: UIViewController {
         case .clearElement:
             numberLabel.reset()
         case .swapNumberSign:
-            if isCalculated == false{
+            if isCalculated == false {
                 
             }
         case .enterDecimalPoints:
-            return
+            if numberString.contains(".") == false {
+                numberString.append(".")
+            }
         case .calculation:
             if isCalculated == false {
                 appendFormulaIntoStackView()
