@@ -15,6 +15,11 @@ class ViewController: UIViewController {
     //MARK: - Properties
     private var resetList: [Resettable] = []
     private var isCalculated: Bool = false
+    private var numberString: String = "" {
+        didSet {
+            numberLabel.text = CalculatorNumberFormatter.shared.convertedDecimalNumber(from: numberString)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,16 +35,14 @@ class ViewController: UIViewController {
             return
         }
         
-        numberLabel.append(number)
+        numberString.append(number)
     }
     
     @IBAction func touchUpOperatorButton(_ sender: OperatorButton) {
         checkCalculated()
-        
-        if numberLabel.isReceiving == true && numberLabel.isZero == false {
-            appendFormulaIntoStackView()
-            numberLabel.reset()
-        }
+    
+        appendFormulaIntoStackView()
+        numberLabel.reset()
         
         operatorLabel.text = sender.operatorSign
     }
@@ -56,10 +59,10 @@ class ViewController: UIViewController {
             numberLabel.reset()
         case .swapNumberSign:
             if isCalculated == false{
-                numberLabel.swapNumberSign()
+                
             }
         case .enterDecimalPoints:
-            numberLabel.appendDecimalPoints()
+            return
         case .calculation:
             if isCalculated == false {
                 appendFormulaIntoStackView()
@@ -72,6 +75,8 @@ class ViewController: UIViewController {
         resetList.forEach {
             $0.reset()
         }
+        
+        numberString = "0"
     }
     
     private func appendFormulaIntoStackView() {

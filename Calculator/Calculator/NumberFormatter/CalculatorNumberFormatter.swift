@@ -19,4 +19,12 @@ class CalculatorNumberFormatter {
         }
         return numberFormatter.number(from: string)
     }
+    
+    func convertedDecimalNumber(from numberString: String) -> String? {
+        if numberString.contains(".") {
+            return numberString
+        } else {
+            return numberFormatter.string(for: Double(numberString))
+        }
+    }
 }
