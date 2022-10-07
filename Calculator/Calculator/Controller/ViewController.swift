@@ -138,7 +138,8 @@ extension ViewController {
     }
     
     private func enterDecimalPoints() {
-        guard state == .receiving else {
+        guard state != .calculating,
+              state != .nan else {
             return
         }
         
