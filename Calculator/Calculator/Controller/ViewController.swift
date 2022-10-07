@@ -172,7 +172,7 @@ extension ViewController {
             numberLabel.text = "NaN"
             state = .nan
         } else if let formattedResult: String = CalculatorNumberFormatter.shared.string(for: result) {
-            numberString = formattedResult
+            numberString = formattedResult.filter({ $0 != ","})
             state = .calculating
         }
         
