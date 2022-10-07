@@ -22,7 +22,14 @@ class CalculatorNumberFormatter {
     
     func convertedDecimalNumber(from numberString: String) -> String? {
         if numberString.contains(".") {
-            return numberString
+            let integerNumber = String(numberString.prefix(while: {$0 != "."}))
+            let decimalNumber = String(numberString.drop(while: {$0 != "."}))
+            
+            guard let formattedNumber = numberFormatter.string(for: Double(integerNumber)) else {
+                return nil
+            }
+            
+            return formattedNumber + decimalNumber
         } else {
             return numberFormatter.string(for: Double(numberString))
         }

@@ -14,11 +14,8 @@ struct CleanNumber {
             return value
         }
         set {
-            if value == "0" {
-                let newValueWithOutZero: String = newValue.filter({ $0 != "0" })
-                if newValueWithOutZero.count > 0 {
-                    value = newValueWithOutZero
-                }
+            if value == "0" && (newValue == "00" || newValue == "000"){
+                value = "0"
             } else {
                 value = newValue
             }
@@ -83,7 +80,7 @@ class ViewController: UIViewController {
             }
         case .enterDecimalPoints:
             if numberString.contains(".") == false {
-                numberString.append(".")
+                numberString += "."
             }
         case .calculation:
             if isCalculated == false {
