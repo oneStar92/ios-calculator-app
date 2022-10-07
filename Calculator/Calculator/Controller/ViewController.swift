@@ -75,9 +75,7 @@ class ViewController: UIViewController {
         case .clearElement:
             numberLabel.reset()
         case .swapNumberSign:
-            if isCalculated == false {
-                
-            }
+            swapNumberSign()
         case .enterDecimalPoints:
             if numberString.contains(".") == false {
                 numberString += "."
@@ -96,6 +94,18 @@ class ViewController: UIViewController {
         }
         
         numberString = "0"
+    }
+    
+    private func swapNumberSign() {
+        guard numberString != "0" else {
+            return
+        }
+        
+        if numberString.first == "-" {
+            numberString.removeFirst()
+        } else {
+            numberString = "-\(numberString)"
+        }
     }
     
     private func appendFormulaIntoStackView() {
