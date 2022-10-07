@@ -52,14 +52,16 @@ class ViewController: UIViewController {
             return
         }
         
-        numberString.append(inputNumber)
+        numberString += inputNumber
     }
     
     @IBAction func touchUpOperatorButton(_ sender: OperatorButton) {
         checkCalculated()
-    
-        appendFormulaIntoStackView()
-        numberLabel.reset()
+        
+        if numberString != "0" {
+            appendFormulaIntoStackView()
+            clearElement()
+        }
         
         operatorLabel.text = sender.operatorSign
     }
@@ -73,7 +75,7 @@ class ViewController: UIViewController {
         case .allClear:
             reset()
         case .clearElement:
-            numberLabel.reset()
+            clearElement()
         case .swapNumberSign:
             swapNumberSign()
         case .enterDecimalPoints:
@@ -93,6 +95,10 @@ class ViewController: UIViewController {
             $0.reset()
         }
         
+        numberString = "0"
+    }
+    
+    private func clearElement() {
         numberString = "0"
     }
     
