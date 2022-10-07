@@ -1,37 +1,37 @@
 enum ExpressionParser {
     static func parse(from input: String) -> Formula {
         var formula = Formula()
-        let components = self.componentsByOperators(from: input)
+        let componentsResult = self.componentsByOperators(from: input)
         
-        components.forEach { string in
-            enqueue(string, in: &formula)
+        componentsResult.forEach {
+            enqueue($0, in: &formula)
         }
         
         return formula
     }
     
     private static func componentsByOperators(from input: String) -> [String] {
-        var components: [String] = [input]
+        var componentsResult: [String] = [input]
         
-        Operator.allCases.forEach { operant in
-            var progressSplit: [String] = []
+        Operator.allCases.forEach { `operator` in
+            var splitResult: [String] = []
             
-            components.forEach { string in
-                progressSplit += string.split(with: operant.rawValue)
+            componentsResult.forEach {
+                splitResult += $0.split(with: `operator`.rawValue)
             }
             
-            components = progressSplit
+            componentsResult = splitResult
         }
         
-        return components
+        return componentsResult
     }
     
-    private static func enqueue(_ component: String, in formula: inout Formula) {
-        if let number = Double(component) {
+    private static func enqueue(_ calculateItem: String, in formula: inout Formula) {
+        if let number: Double = Double(calculateItem) {
             formula.operands.enqueue(number)
         } else {
-            if let operant = Operator(rawValue: Character(component)) {
-                formula.operators.enqueue(operant)
+            if let `operator`: Operator = Operator(rawValue: Character(calculateItem)) {
+                formula.operators.enqueue(`operator`)
             }
         }
     }

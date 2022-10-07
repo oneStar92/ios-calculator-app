@@ -9,15 +9,8 @@ class CalculatorNumberFormatter {
         numberFormatter.maximumSignificantDigits = 20
     }
     
-    func string(for obj: Any?) -> String? {
-        return numberFormatter.string(for: obj)
-    }
-    
-    func number(from string: String?) -> NSNumber? {
-        guard let string = string?.filter({ $0 != Character(",") }) else {
-            return nil
-        }
-        return numberFormatter.number(from: string)
+    func string(for object: Any?) -> String? {
+        return numberFormatter.string(for: object)
     }
     
     func convertedDecimalNumber(from numberString: String) -> String? {
